@@ -67,7 +67,7 @@ class _HomePageState extends State<HomePage>
 
   void _joinCall() {
     String userName = _nameController.text.trim();
-    String roomId = _roomController.text.trim();
+    String roomId = _roomController.text.trim().toLowerCase();
 
     if (userName.isEmpty || roomId.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -104,93 +104,96 @@ class _HomePageState extends State<HomePage>
             end: Alignment.bottomRight,
           ),
         ),
-        child: SingleChildScrollView(
-          child: Padding(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 24.0, vertical: 80.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ScaleTransition(
-                  scale: _animation,
-                  child: const Icon(
-                    Icons.video_call_rounded,
-                    color: Colors.deepPurpleAccent,
-                    size: 120,
-                  ),
-                ),
-                const SizedBox(height: 40),
-                const Text(
-                  "Zego Video Call",
-                  style: TextStyle(
-                    fontSize: 28,
-                    fontWeight: FontWeight.bold,
-                    letterSpacing: 1.2,
-                    color: Colors.white,
-                  ),
-                ),
-                const SizedBox(height: 10),
-                const Text(
-                  "Join your friends in real-time video calls!",
-                  style: TextStyle(color: Colors.white70, fontSize: 16),
-                ),
-                const SizedBox(height: 50),
-                TextField(
-                  controller: _nameController,
-                  decoration: InputDecoration(
-                    labelText: "Your Username",
-                    prefixIcon: const Icon(Icons.person),
-                    filled: true,
-                    fillColor: Colors.white10,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(16),
+        child: GestureDetector(
+          onTap: () => FocusScope.of(context).unfocus(),
+          child: SingleChildScrollView(
+            child: Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 24.0, vertical: 80.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ScaleTransition(
+                    scale: _animation,
+                    child: const Icon(
+                      Icons.video_call_rounded,
+                      color: Colors.deepPurpleAccent,
+                      size: 120,
                     ),
                   ),
-                ),
-                const SizedBox(height: 20),
-                TextField(
-                  controller: _roomController,
-                  decoration: InputDecoration(
-                    labelText: "Enter Call ID",
-                    prefixIcon: const Icon(Icons.videocam_rounded),
-                    filled: true,
-                    fillColor: Colors.white10,
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(16),
+                  const SizedBox(height: 40),
+                  const Text(
+                    "Zego Video Call",
+                    style: TextStyle(
+                      fontSize: 28,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 1.2,
+                      color: Colors.white,
                     ),
                   ),
-                ),
-                const SizedBox(height: 40),
-                GestureDetector(
-                  onTap: _joinCall,
-                  child: Container(
-                    width: size.width * 0.6,
-                    padding: const EdgeInsets.symmetric(
-                        vertical: 14, horizontal: 20),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(30),
-                      gradient: const LinearGradient(
-                        colors: [
-                          Colors.deepPurpleAccent,
-                          Colors.blueAccent
-                        ],
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                      ),
-                    ),
-                    alignment: Alignment.center,
-                    child: const Text(
-                      "Join Call",
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        letterSpacing: 1,
-                        color: Colors.white,
+                  const SizedBox(height: 10),
+                  const Text(
+                    "Join your friends in real-time video calls!",
+                    style: TextStyle(color: Colors.white70, fontSize: 16),
+                  ),
+                  const SizedBox(height: 50),
+                  TextField(
+                    controller: _nameController,
+                    decoration: InputDecoration(
+                      labelText: "Your Username",
+                      prefixIcon: const Icon(Icons.person),
+                      filled: true,
+                      fillColor: Colors.white10,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(16),
                       ),
                     ),
                   ),
-                ),
-              ],
+                  const SizedBox(height: 20),
+                  TextField(
+                    controller: _roomController,
+                    decoration: InputDecoration(
+                      labelText: "Enter Call ID",
+                      prefixIcon: const Icon(Icons.videocam_rounded),
+                      filled: true,
+                      fillColor: Colors.white10,
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 40),
+                  GestureDetector(
+                    onTap: _joinCall,
+                    child: Container(
+                      width: size.width * 0.6,
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 14, horizontal: 20),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(30),
+                        gradient: const LinearGradient(
+                          colors: [
+                            Colors.deepPurpleAccent,
+                            Colors.blueAccent
+                          ],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
+                      ),
+                      alignment: Alignment.center,
+                      child: const Text(
+                        "Join Call",
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          letterSpacing: 1,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),
