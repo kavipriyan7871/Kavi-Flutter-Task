@@ -43,6 +43,8 @@ dependencies:
   firebase_storage: ^13.0.4
   uuid: ^4.5.2
   just_audio: ^0.10.5
+  zego_uikit_signaling_plugin: ^2.8.19
+  zego_callkit: ^1.0.0+5
 
 dev_dependencies:
   flutter_test:

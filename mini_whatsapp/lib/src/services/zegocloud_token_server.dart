@@ -1,42 +1,41 @@
-// lib/services/zegocloud_token_server.dart
-
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../config/app_config.dart';
 
+/// Handles requesting a Zego token from your Node.js backend.
 class ZegoTokenClient {
   final String baseUrl;
 
-  const ZegoTokenClient({this.baseUrl = AppConfig.tokenServerBaseUrl});
+  const ZegoTokenClient({
+    this.baseUrl = AppConfig.tokenServerBaseUrl,
+  });
 
-  /// Fetch Zego token from your Node.js backend
+  /// Requests token from Node:  POST /zego/token { uid }
   Future<String> getTokenForUser(String uid) async {
-    final uri = Uri.parse("$baseUrl/zego/token");
+    final url = Uri.parse("$baseUrl/zego/token");
 
     try {
       final response = await http.post(
-        uri,
+        url,
         headers: {"Content-Type": "application/json"},
         body: jsonEncode({"uid": uid}),
       );
 
       if (response.statusCode != 200) {
         throw Exception(
-          "❌ Server error: ${response.statusCode}\n${response.body}",
+          "Server error: ${response.statusCode}\n${response.body}",
         );
       }
 
-      final data = jsonDecode(response.body);
+      final Map<String, dynamic> data = jsonDecode(response.body);
 
-      // Validate response
-      if (!data.containsKey("signature")) {
-        throw Exception("❌ Token is missing in backend response");
+      if (!data.containsKey("signature") || data["signature"] == null) {
+        throw Exception("Invalid backend response: token missing");
       }
 
-      // Return ONLY Zego token
       return data["signature"].toString();
     } catch (e) {
-      throw Exception("❌ Failed to fetch token: $e");
+      throw Exception("Zego token fetch failed: $e");
     }
   }
 }

@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
       create: (_) => AuthService(),
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'Mini WhatsApp',
+        title: 'Conversation App',
         theme: ThemeData(primarySwatch: Colors.green),
         home: const Root(),
       ),
