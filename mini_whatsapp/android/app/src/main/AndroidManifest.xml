@@ -11,29 +11,32 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
 
-    <!-- 🚨 Required for Android 12+ / 13+ / 14 -->
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MICROPHONE" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_CAMERA" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PROJECTION" />
+    <!-- 📁 Storage (Android 10 and below) -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"
+        android:maxSdkVersion="28" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="28" />
 
     <!-- 🖼 Scoped storage for Android 13+ -->
     <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
     <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
 
-    <!-- 📁 Legacy storage (< Android 10) -->
+    <!-- 🚨 Required for Android 12+ / 13+ / 14 -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MICROPHONE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_CAMERA" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PROJECTION" />
 
     <application
         android:name="${applicationName}"
         android:label="mini_whatsapp"
         android:icon="@mipmap/ic_launcher"
-        android:usesCleartextTraffic="true"
         android:hardwareAccelerated="true"
-        android:requestLegacyExternalStorage="true"
+        android:usesCleartextTraffic="true"
         android:enableOnBackInvokedCallback="true">
 
-        <!-- 🚀 Main Flutter Activity -->
+        <!-- 🚀 Flutter Main Activity -->
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -46,31 +49,43 @@
                 android:name="io.flutter.embedding.android.NormalTheme"
                 android:resource="@style/NormalTheme" />
 
-            <!-- Launcher -->
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-        <!-- 🔔 Firebase Messaging -->
+        <!-- 🔔 Default notification icon (Firebase optional) -->
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@mipmap/ic_launcher" />
+
+        <!-- 🖼 File Provider (REQUIRED for Image/Video Picker) -->
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
+        <!-- 🎬 Zego Foreground Service (Prevents Android 14 crash) -->
+        <service
+            android:name="im.zego.zego_express_engine.internal.ZegoForegroundService"
+            android:exported="false"
+            android:foregroundServiceType="microphone|camera|mediaProjection" />
 
         <!-- Flutter Engine -->
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
 
-        <!-- 🎬 Zego Foreground Service (prevents Android 14 crash) -->
-        <service
-            android:name="im.zego.zego_express_engine.internal.ZegoForegroundService"
-            android:exported="false"
-            android:foregroundServiceType="microphone|camera|mediaProjection" />
     </application>
 
-    <!-- Needed for plugins using PROCESS_TEXT -->
+    <!-- Required for PROCESS_TEXT in some plugins -->
     <queries>
         <intent>
             <action android:name="android.intent.action.PROCESS_TEXT" />
